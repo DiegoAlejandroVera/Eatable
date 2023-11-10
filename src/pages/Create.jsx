@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Form } from "../components/Form";
@@ -18,16 +17,15 @@ const FormContainer = styled.div`
   margin-top: 70px;
 `;
 
-const CreateForm = () => {
+const Create = () => {
   return (
     <MainContainer>
       <Header>Create Product</Header>
       <FormContainer>
         <Form />
       </FormContainer>
-      <Footer path="/">Create</Footer>
     </MainContainer>
   );
 };
 
-export default CreateForm;
+export default Create;
