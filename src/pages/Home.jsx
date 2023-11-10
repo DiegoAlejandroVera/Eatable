@@ -44,19 +44,28 @@ export const Home = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(data));
+  }, [data]);
+
   return (
     <MainContainer>
       <Header>Products Dashboard</Header>
       <Grow>
         {loading ? (
           <Loader>
-            <Bars height={80} width={80} color="orange" />
+            <Bars
+              height={80}
+              width={80}
+              color="#fa4a0c"
+              ariaLabel="bars-loading"
+            />
           </Loader>
         ) : (
           data && (
             <Grid>
               {data.map((p) => (
-                <Card key={p.id} product={p} />
+                <Card key={p.id} product={p} data={data} />
               ))}
             </Grid>
           )
