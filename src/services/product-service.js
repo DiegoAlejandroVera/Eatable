@@ -29,3 +29,7 @@ export function updateProduct(body, id) {
     .then((data) => data.json())
     .catch((error) => console.log(error));
 }
+
+export function deleteProduct(id) {
+  return fetch(`${BASE_URL}/products/${id}`, { method: "DELETE" });
+}
