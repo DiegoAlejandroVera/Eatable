@@ -84,7 +84,10 @@ const UpdateForm = () => {
       picture_url: formElements.picture_url.value,
     };
 
-    updateProduct(updatedProduct, Number(id));
+    updateProduct(updatedProduct, Number(id)).then((data) => {
+      const updated = [...localProducts, data];
+      localStorage.setItem("products", JSON.stringify(updated));
+    });
     navigate("/");
   }
 
