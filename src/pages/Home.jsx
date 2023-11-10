@@ -65,7 +65,7 @@ export const Home = () => {
           data && (
             <Grid>
               {data.map((p) => (
-                <Card key={p.id} product={p} data={data} />
+                <Card key={p.id} product={p} data={data} setData={setData} />
               ))}
             </Grid>
           )

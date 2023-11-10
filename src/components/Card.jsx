@@ -1,7 +1,11 @@
 import { RiDeleteBin2Fill } from "react-icons/ri";
-import { BiPointer, BiSolidMessageSquareEdit } from "react-icons/bi";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { deleteProduct } from "../services/product-service";
+import Modal from "./Modal";
+import PropTypes from "prop-types";
 
 const Main = styled.div`
   width: 190px;
@@ -27,9 +31,10 @@ const StyledImg = styled.img`
 const Title = styled.p`
   font-family: var(--main-font);
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   text-align: center;
   letter-spacing: 1px;
+  text-transform: capitalize;
 `;
 
 const Description = styled.div`
@@ -55,7 +60,37 @@ const Icons = styled.div`
   justify-content: space-around;
 `;
 
-const Card = ({ product }) => {
+const Card = ({ product, data, setData }) => {
+  const [isModalOpen, setIsModalOpen] = useState({});
+
+  function handleClick(id) {
+    if (isModalOpen[id]) {
+      deleteProduct(id).then(() => {
+        const updatedProducts = data.filter((prod) => prod.id !== id);
+        setData(updatedProducts);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+      });
+      setIsModalOpen((prevState) => ({
+        ...prevState,
+        [id]: false,
+      }));
+    }
+  }
+
+  function openModal(id) {
+    setIsModalOpen((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  }
+
+  function closeModal(id) {
+    setIsModalOpen((prevState) => ({
+      ...prevState,
+      [id]: false,
+    }));
+  }
+
   return (
     <Main>
       <Link to={`/details/${product.id}`} product={product}>
@@ -71,9 +106,25 @@ const Card = ({ product }) => {
             </Link>
           </div>
           <div style={{ cursor: "pointer" }}>
-            <Link>
+            <button
+              onClick={() => openModal(product.id)}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
               <RiDeleteBin2Fill size={25} color="#fa4a0c" />
-            </Link>
+            </button>
+            <Modal
+              isOpen={isModalOpen[product.id]}
+              onClose={() => closeModal(product.id)}
+              onClick={() => handleClick(product.id)}
+            >
+              <p style={{ fontSize: "22px", color: "#333333" }}>
+                Are you sure?
+              </p>
+            </Modal>
           </div>
         </Icons>
       </Description>
@@ -82,3 +133,8 @@ const Card = ({ product }) => {
 };
 
 export default Card;
+
+Card.propTypes = {
+  product: PropTypes.object,
+  data: PropTypes.array,
+};
