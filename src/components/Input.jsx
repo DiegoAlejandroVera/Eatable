@@ -32,12 +32,19 @@ const Input = ({
   type = "text",
   id,
   placeholder = "",
-  onchange,
+  onChange,
 }) => {
   return (
     <InputContainer>
       <Label htmlFor={name || id}>{label}</Label>
-      <InputContent type={type} name={name} id={id} placeholder={placeholder} />
+      <InputContent
+        type={type}
+        name={name}
+        id={id}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </InputContainer>
   );
 };
